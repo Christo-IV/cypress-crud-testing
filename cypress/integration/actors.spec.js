@@ -25,4 +25,10 @@ describe("Actor CRUD opertation tests", () => {
       console.log(id);
     });
   });
+
+  it("Checks for a list of actors", () => {
+    cy.get(".nav-link[href=actors]").click();
+    cy.url().should("contains", "http://192.168.28.11/crud_php/actors");
+    cy.get(".table").find("td").its("length").should("be.gte", 5);
+  });
 });
