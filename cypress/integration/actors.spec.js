@@ -22,7 +22,6 @@ describe("Actor CRUD opertation tests", () => {
         .within(() => {
           cy.get("td").first().contains(id);
         });
-      console.log(id);
     });
   });
 
@@ -30,5 +29,32 @@ describe("Actor CRUD opertation tests", () => {
     cy.get(".nav-link[href=actors]").click();
     cy.url().should("contains", "http://192.168.28.11/crud_php/actors");
     cy.get(".table").find("td").its("length").should("be.gte", 5);
+  });
+
+  it("Checks if an actor can be deleted", () => {
+    // Get original Actor's table length
+    cy.get(".table")
+      .find("tr")
+      .then((elements) => {
+        cy.wrap(elements.length).as("oldLength");
+      });
+    // Delete row from Actor's table
+    cy.get(".table tr")
+      .last()
+      .within(() => {
+        cy.get("td").last().click();
+      });
+    // Get new Actor's table length
+    cy.get(".table")
+      .find("tr")
+      .then((elements) => {
+        cy.wrap(elements.length).as("newLength");
+      });
+    // Compare old Actor's table length to the new one
+    cy.get("@oldLength").then((oldLength) => {
+      cy.get("@newLength").then((newLength) => {
+        expect(newLength).to.be.lessThan(oldLength);
+      });
+    });
   });
 });
