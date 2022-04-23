@@ -152,4 +152,19 @@ describe("Actor CRUD opertation tests", () => {
         });
     });
   });
+
+  it("Checks if create form can be submitted with incomplete data", () => {
+    cy.get("button").contains("Create").click();
+    cy.url().should("eq", "http://192.168.28.11/crud_php/actors/new");
+    cy.get(".btn").click();
+    cy.url().should("eq", "http://192.168.28.11/crud_php/actors/new");
+  });
+
+  it("Checks if edit form can be submitted with incomplete data", () => {
+    cy.get(".row-btn > .btn.btn-warning").last().contains("Edit").click();
+    cy.url().should("contains", "http://192.168.28.11/crud_php/actors/edit/");
+    cy.get("#name").clear();
+    cy.get(".btn").click();
+    cy.url().should("contains", "http://192.168.28.11/crud_php/actors/edit/");
+  });
 });
